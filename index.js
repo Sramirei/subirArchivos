@@ -1,11 +1,13 @@
 const fs = require('fs')
 const { google } = require('googleapis')
 
-const GOOGLE_API_FOLDER_ID = '1nvAXzOsH8to4NvdpMaSPlYwe7flczsQc'
+const GOOGLE_API_FOLDER_ID = '10ksu1em8fuJ0hQUv4Wf6-2TOefCbqjvP' //this is the id of the folder in the google drive read the readme file to know how to find it
 
-const date = new Date()
-.toLocaleDateString()
-.replace('/','-').replace('/','-')
+let date = new Date()
+let day = `${(date.getDate())}`.padStart(2,'0');
+let month = `${(date.getMonth()+1)}`.padStart(2,'0');
+let year = date.getFullYear();
+let fullDate = `${day}${month}${year}`
 
 async function uploadFile(){
     try{
@@ -20,13 +22,13 @@ async function uploadFile(){
         })
 
         const fileMetaData = {
-            'name': `${date}-snow.sql`,
+            'name': `${fullDate}-snow.sql`, //you should change the file extension according to your need
             'parents': [GOOGLE_API_FOLDER_ID]
         }
 
         const media = {
             mimeType: 'application/sql',
-            body: fs.createReadStream(`./Nueva carpeta/${date}-snow.jpg`)
+            body: fs.createReadStream(`./BackupDolphinManager/${fullDate}_NOMBREDELARCHIVO.gz`) //you should change the file extension according to your need
         }
 
         const response = await driveService.files.create({
